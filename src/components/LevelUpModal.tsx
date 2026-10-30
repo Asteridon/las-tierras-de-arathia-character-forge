@@ -1028,28 +1028,6 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
       finalSpellSlots = calculatedNewSpellSlots;
     }
 
-    // 5.1. Artificer Specialist Spells (Conjuros de Especialista de Artífice)
-    const isArtificerChar = activeClassName.toLowerCase().includes('artifice') || activeClassName.toLowerCase().includes('artífice');
-    if (isArtificerChar && activeSubclassChoice) {
-      const specSpells = getArtificerSpecialistSpells(activeSubclassChoice, newClassLevel);
-      specSpells.forEach((splName) => {
-        const cleanName = splName.split('(')[0].trim();
-        const alreadyHas = updatedSpells.some((s) => s.name.toLowerCase() === cleanName.toLowerCase());
-        if (!alreadyHas) {
-          const found = findSpellByNameOrAlias(cleanName) || findSpellByNameOrAlias(splName);
-          if (found) {
-            updatedSpells.push({
-              ...found,
-              id: `char-spl-artificer-spec-${found.id || found.name.toLowerCase().replace(/\s+/g, '-')}`,
-              prepared: true,
-              notes: `Conjuro de Especialista (${activeSubclassChoice}). Siempre preparado sin contar en tu límite diario.`,
-            });
-            addedNotes += `\n[Nivel ${newLevel}] Conjuro de Especialista de Artífice Preparado: "${found.name}".`;
-          }
-        }
-      });
-    }
-
     // 5.2. Capstone de Bárbaro Nivel 20: Campeón Primitivo (Primal Champion)
     const isBarbarianChar = activeClassName.toLowerCase().includes('barbaro') || activeClassName.toLowerCase().includes('bárbaro') || activeClassName.toLowerCase().includes('barbarian');
     let effectiveMaxHp = newMaxHp;
